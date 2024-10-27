@@ -31,11 +31,14 @@
     <variable displayName="End date (DD/MM/YYYY)" name="params.eddt_ddmmyyyy" startIncrement="0" type="String" mandatoryArray="false" visible="true" description="" groupSeparator="|" groupDisplayName="" maxLength="100" displayOrder="2" increment="0" refServiceURI="" keepOnImport="true" editable="false" uniqueItemsInDropDownList="false" onlyDetailView="false" createOnlyView="false" localVarNameMatch="" remoteVarNameMatch="" localVarToFilter="" remoteVarToFilter="" remoteVarValueToFilter="" arrayCanAdd="true" arrayCanRemove="true" arrayCanMove="true" arrayCanEdit="true" validationRegex="^(0[1-9]|[12][0-9]|3[01])/(0[1-9]|1[0-2])/(19|20)\d{2}$" displayNameHeader="" fullDisplayName="" isCompositeKey="false" default="31/12/2025" isMandatory="true" isUserLocked="false" isEditLocked="false" isGrouped="false" isSearchable="false" isUniqueGlobal="false"/>
     <variable displayName="UEBA Server IP" name="params.ueba_sv_ip" startIncrement="0" type="String" mandatoryArray="false" visible="true" description="IP address for UEBA Server" groupSeparator="|" groupDisplayName="" maxLength="100" displayOrder="3" increment="0" refServiceURI="" keepOnImport="true" editable="false" uniqueItemsInDropDownList="false" onlyDetailView="false" createOnlyView="false" localVarNameMatch="" remoteVarNameMatch="" localVarToFilter="" remoteVarToFilter="" remoteVarValueToFilter="" arrayCanAdd="true" arrayCanRemove="true" arrayCanMove="true" arrayCanEdit="true" validationRegex="/^10\.([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])$|^172\.(1[6-9]|2[0-9]|3[0-1])\.([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])$|^192\.168\.([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\.([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])$/" displayNameHeader="" fullDisplayName="" isCompositeKey="false" isMandatory="true" isUserLocked="false" isEditLocked="false" isGrouped="false" isSearchable="false" isUniqueGlobal="false"/>
   </variables>
-  <example/>
+  <example>
+    <content>20240101 ObjectID:1 Start:01/01/2024 End:31/12/2025</content>
+  </example>
   <command name="IMPORT">
+    <operation><![CDATA[tail -1 ausearch.log]]></operation>
     <parser>
       <section>
-        <regexp>@^\s \s*$@</regexp>
+        <regexp>@^\d{8}\sObjectID:(?&lt;object_id&gt;(\d{1,}))\sStart\:(?&lt;stdt_mmddyyyy&gt;(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0-2])\/(19|20)\d{2})\sEnd\:(?&lt;eddt_mmddyyyy&gt;(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0-2])\/(19|20)\d{2})@</regexp>
       </section>
       <lines/>
     </parser>
@@ -47,7 +50,25 @@ if [ -f /etc/debian_version ]; then sudo apt-get update && sudo apt-get -y insta
 echo "`date +%Y%m%d` ObjectID:{$params.object_id} Start:{$params.stdt_ddmmyyyy} End:{$params.eddt_ddmmyyyy}" >> ausearch.log
 ]]></operation>
   </command>
-  <command name="READ"/>
+  <command name="READ">
+    <output><![CDATA[FN=ausearch_`echo $SSH_CONNECTION | awk '{print $3}'`_`date +%Y%m%d%H%M%S`.log
+STDT={$params.stdt_ddmmyyyy}
+STDT2="${STDT:0:6}${STDT:8:2}"
+EDDT={$params.eddt_ddmmyyyy}
+EDDT2="${STDT:0:6}${STDT:8:2}"
+UEBA={$params.ueba_sv_ip}
+echo "`date +%Y%m%d` ObjectID:{$params.object_id} Start:${STDT} End:${EDDT}" >> ausearch.log
+if [ -f /etc/fedora-release ] || [ -f /etc/redhat-release ]; then ls -tr /var/log/audit/audit.log* | xargs -I{} sudo ausearch -if {} -sc 59 -i --start ${STDT} --end ${EDDT} | sort -k2,2 -k3,3n > ${FN}:fi
+if [ -f /etc/debian_version ]; then ls -tr /var/log/audit/audit.log* | xargs -I{} sudo ausearch -if {} -sc 59 -i --start ${STDT2} --end ${EDDT2} | sort -k2,2 -k3,3n > ${FN}:fi
+[ -f ~/.ssh/id_ed25519 ] || ssh-keygen -t ed25519 -N "" -f ~/.ssh/id_ed25519 <<< y > /dev/null 2>&1
+ssh-keygen -R "[${UEBA}]:10022"  # IP address needs [] when port number is described
+set +o history   # To avoid pass recorded in history
+sshpass -p "ueba@axg" ssh-copy-id -o StrictHostKeyChecking=no -p 10022 ueba@${UEBA}
+set -o history
+scp -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -i .ueba -o port=10022 ${FN} ueba@${UEBA}:/home/ueba/uploads
+rm -f ausearch_*.tar.gz
+tar cvfz ${FN}.tar.gz ${FN}]]></output>
+  </command>
   <command name="UPDATE">
     <operation><![CDATA[FN=ausearch_`echo $SSH_CONNECTION | awk '{print $3}'`_`date +%Y%m%d%H%M%S`.log
 STDT={$params.stdt_ddmmyyyy}
