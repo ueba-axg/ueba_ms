@@ -67,8 +67,8 @@ if [ -f /etc/os-release ]; then . /etc/os-release; Distrib="${NAME,,}"; fi
 
 if [ "$Distrib" = "redhat" ]; then systemctl disable --now auditd && dnf -y remove audit;fi
 if [ "$Distrib" = "fedora" ]; then systemctl disable --now auditd && dnf -y remove audit;fi
-if [ "$Distrib" = "debian" ]; then systemctl enable --now auditd && apt-get -y install auditd;fi
-if [ "$Distrib" = "ubuntu" ]; then systemctl enable --now auditd && apt-get -y install auditd;fi
+if [ "$Distrib" = "debian" ]; then systemctl disable --now auditd && apt-get -y remove auditd;fi
+if [ "$Distrib" = "ubuntu" ]; then systemctl disable --now auditd && apt-get -y remove auditd;fi
 ]]></operation>
   </command>
   <command name="LIST"/>
