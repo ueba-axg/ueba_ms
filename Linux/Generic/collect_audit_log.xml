@@ -40,14 +40,36 @@
     </parser>
   </command>
   <command name="CREATE">
-    <operation><![CDATA[ausearch -sc 59 -i --start {$params.stdt_ddmmyyyy} --end {$params.eddt_ddmmyyyy}
+    <operation><![CDATA[if [ -f /etc/fedora-release ]; then Distrib="fedora"; fi
+if [ -f /etc/redhat-release ]; then Distrib="redhat"; fi
+if [ -f /etc/debian_version ]; then Distrib="debian"; fi
+if [ -f /etc/os-release ]; then . /etc/os-release; Distrib="${NAME,,}"; fi
+
+if [ "$Distrib" = "redhat" ]; then dnf -y install audit && systemctl enable --now auditd;fi
+if [ "$Distrib" = "fedora" ]; then dnf -y install audit && systemctl enable --now auditd;fi
+if [ "$Distrib" = "debian" ]; then apt-get update && apt-get -y install auditd && systemctl enable --now auditd;fi
+if [ "$Distrib" = "ubuntu" ]; then apt-get update && apt-get -y install auditd && systemctl enable --now auditd;fi
 ]]></operation>
   </command>
   <command name="READ">
     <output><![CDATA[]]></output>
   </command>
-  <command name="UPDATE"/>
+  <command name="UPDATE">
+    <operation><![CDATA[ausearch -sc 59 -i --start {$params.stdt_ddmmyyyy} --end {$params.eddt_ddmmyyyy}
+]]></operation>
+  </command>
   <command name="CONSTRAINT"/>
-  <command name="DELETE"/>
+  <command name="DELETE">
+    <operation><![CDATA[if [ -f /etc/fedora-release ]; then Distrib="fedora"; fi
+if [ -f /etc/redhat-release ]; then Distrib="redhat"; fi
+if [ -f /etc/debian_version ]; then Distrib="debian"; fi
+if [ -f /etc/os-release ]; then . /etc/os-release; Distrib="${NAME,,}"; fi
+
+if [ "$Distrib" = "redhat" ]; then systemctl disable --now auditd && dnf -y remove audit;fi
+if [ "$Distrib" = "fedora" ]; then systemctl disable --now auditd && dnf -y remove audit;fi
+if [ "$Distrib" = "debian" ]; then systemctl enable --now auditd && apt-get -y install auditd;fi
+if [ "$Distrib" = "ubuntu" ]; then systemctl enable --now auditd && apt-get -y install auditd;fi
+]]></operation>
+  </command>
   <command name="LIST"/>
 </ObjectDefinition>
