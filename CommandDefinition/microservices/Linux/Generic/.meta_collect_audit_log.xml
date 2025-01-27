@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<metadata>
+    <map>
+        <entry>
+            <key>DISPLAYNAME</key>
+            <value>collect_audit_log.xml</value>
+        </entry>
+        <entry>
+            <key>REPOSITORY</key>
+            <value>CommandDefinition</value>
+        </entry>
+        <entry>
+            <key>TYPE</key>
+            <value>FILE</value>
+        </entry>
+    </map>
+</metadata>
