@@ -34,7 +34,7 @@
     <content>20240101 ObjectID:1 Start:01012024 End:31122025</content>
   </example>
   <command name="IMPORT">
-    <operation><![CDATA[tail -1 /var/log/MSA_update.log]]></operation>
+    <operation><![CDATA[tail -1 /var/log/UEBA_update.log]]></operation>
     <parser>
       <section>
         <regexp>@^\d{8} ObjectID:(?&lt;object_id&gt;(\d{1,})) Start:(?&lt;stdt_mmddyyyy&gt;(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0-2])\/(19|20)\d{2}) End:(?&lt;eddt_mmddyyyy&gt;(0[1-9]|[12][0-9]|3[01])\/(0[1-9]|1[0-2])\/(19|20)\d{2})@</regexp>
