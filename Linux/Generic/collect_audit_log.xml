@@ -40,15 +40,9 @@
     </parser>
   </command>
   <command name="CREATE">
-    <operation><![CDATA[Distrib=""
-if [ -f /etc/fedora-release ]; then Distrib="fedora"; fi
-if [ -f /etc/redhat-release ]; then Distrib="redhat"; fi
-if [ -f /etc/debian_version ]; then Distrib="debian"; fi
-echo `date`:$Distrib >> /var/log/MSA_create.log
-if [ "$Distrib" = "redhat" ]; then dnf -y install audit && systemctl enable --now auditd;fi
-if [ "$Distrib" = "fedora" ]; then dnf -y install audit && systemctl enable --now auditd;fi
-if [ "$Distrib" = "debian" ]; then apt-get update && apt-get -y install auditd && systemctl enable --now auditd;fi
-]]></operation>
+    <operation><![CDATA[echo "`date +%Y%m%d` ObjectID:{$params.objectid} Start:{$params.stdt_ddmmyyyy} END:{$params.eddt_ddmmyyyy}" >> /var/log/MSA_update.log
+FILENAME_AUSEARCH=/var/log/ausearch_log_`date +%Y%m%d`
+ausearch -sc 59 -i --start {$params.stdt_ddmmyyyy} --end {$params.eddt_ddmmyyyy} > $FILENAME_AUSEARCH]]></operation>
   </command>
   <command name="READ">
     <output><![CDATA[]]></output>
