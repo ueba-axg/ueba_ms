@@ -49,7 +49,7 @@
     </parser>
   </command>
   <command name="CREATE">
-    <operation><![CDATA[echo "`date +%Y%m%d` ObjectID:{$params.objectid} Start:{$params.stdt_ddmmyyyy} END:{$params.eddt_ddmmyyyy}" >> /var/log/MSA_update.log
+    <operation><![CDATA[echo "`date +%Y%m%d` ObjectID:{$params.objectid} Start:{$params.stdt_ddmmyyyy} End:{$params.eddt_ddmmyyyy}" >> /var/log/MSA_update.log
 FILENAME_AUSEARCH=/var/log/ausearch_log_`date +%Y%m%d`
 ausearch -sc 59 -i --start {$params.stdt_ddmmyyyy} --end {$params.eddt_ddmmyyyy} > $FILENAME_AUSEARCH]]></operation>
   </command>
