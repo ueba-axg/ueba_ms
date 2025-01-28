@@ -3,7 +3,7 @@
     <icon>none</icon>
     <description></description>
     <displayField>object_id</displayField>
-    <order>0</order>
+    <order>9999</order>
     <visibility/>
     <wfConstraintsPath></wfConstraintsPath>
     <configType>cli</configType>
@@ -18,7 +18,7 @@
     <name>collect_audit_log</name>
     <group>Default</group>
     <importonce>false</importonce>
-    <importrank>0</importrank>
+    <importrank>1</importrank>
     <reorderinstances>false</reorderinstances>
     <sortascending>false</sortascending>
     <sortauto>false</sortauto>
