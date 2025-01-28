@@ -55,7 +55,8 @@ if [ "$Distrib" = "ubuntu" ]; then apt-get update && apt-get -y install auditd &
     <output><![CDATA[]]></output>
   </command>
   <command name="UPDATE">
-    <operation><![CDATA[ausearch -sc 59 -i --start {$params.stdt_ddmmyyyy} --end {$params.eddt_ddmmyyyy}
+    <operation><![CDATA[FILENAME_AUSEARCH=/var/log/ausearch_log_`date +%Y%m%d`
+ausearch -sc 59 -i --start {$params.stdt_ddmmyyyy} --end {$params.eddt_ddmmyyyy} > $FILENAME_AUSEARCH
 ]]></operation>
   </command>
   <command name="CONSTRAINT"/>
