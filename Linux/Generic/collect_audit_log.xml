@@ -57,10 +57,7 @@ ausearch -sc 59 -i --start {$params.stdt_ddmmyyyy} --end {$params.eddt_ddmmyyyy}
     <output><![CDATA[]]></output>
   </command>
   <command name="UPDATE">
-    <operation><![CDATA[echo "`date`: Start {$params.stdt_ddmmyyyy} End:{$params.eddt_ddmmyyyy}" >> /var/log/MSA_update.log
-FILENAME_AUSEARCH=/var/log/ausearch_log_`date +%Y%m%d`
-ausearch -sc 59 -i --start {$params.stdt_ddmmyyyy} --end {$params.eddt_ddmmyyyy} > $FILENAME_AUSEARCH
-]]></operation>
+    <operation><![CDATA[]]></operation>
   </command>
   <command name="CONSTRAINT"/>
   <command name="DELETE">
