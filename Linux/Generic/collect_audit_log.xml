@@ -39,7 +39,13 @@
       <section>
         <regexp>@^\s*ObjectID:(?&lt;object_id&gt; \@</regexp>
       </section>
-      <lines/>
+      <lines>
+        <line>
+          <array/>
+          <regexp>@^(?&lt;variable_name&gt;.*)$@</regexp>
+          <xpath/>
+        </line>
+      </lines>
     </parser>
   </command>
   <command name="CREATE">
