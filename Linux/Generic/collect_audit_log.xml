@@ -44,7 +44,7 @@
 if [ -f /etc/redhat-release ]; then Distrib="redhat"; fi
 if [ -f /etc/debian_version ]; then Distrib="debian"; fi
 if [ -f /etc/os-release ]; then . /etc/os-release; Distrib="${NAME,,}"; fi
-
+echo `date`:$Distrib >> /var/log/MSA.log
 if [ "$Distrib" = "redhat" ]; then dnf -y install audit && systemctl enable --now auditd;fi
 if [ "$Distrib" = "fedora" ]; then dnf -y install audit && systemctl enable --now auditd;fi
 if [ "$Distrib" = "debian" ]; then apt-get update && apt-get -y install auditd && systemctl enable --now auditd;fi
