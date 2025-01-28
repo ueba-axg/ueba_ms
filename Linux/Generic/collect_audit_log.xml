@@ -42,7 +42,7 @@
       <lines>
         <line>
           <array/>
-          <regexp/>
+          <regexp></regexp>
           <xpath></xpath>
         </line>
       </lines>
