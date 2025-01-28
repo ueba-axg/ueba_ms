@@ -37,13 +37,13 @@
     <operation><![CDATA[tail -1 /var/log/MSA_update.log]]></operation>
     <parser>
       <section>
-        <regexp>@^\s*ObjectID:(?&lt;object_id&gt; \@</regexp>
+        <regexp>@^\s* (?&lt;object_id&gt;\d+ )Start:(?&lt;stdt_mmddyyyy&gt;([0-9]{1,8})) End:(?&lt;stdt_mmddyyyy&gt;([0-9]{1,8}))@</regexp>
       </section>
       <lines>
         <line>
           <array/>
-          <regexp>@^(?&lt;variable_name&gt;.*)$@</regexp>
-          <xpath/>
+          <regexp/>
+          <xpath></xpath>
         </line>
       </lines>
     </parser>
