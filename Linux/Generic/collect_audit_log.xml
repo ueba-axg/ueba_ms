@@ -15,7 +15,7 @@
     <maxInstances>0</maxInstances>
     <relatedObjects></relatedObjects>
     <retainIfImportIsEmpty>false</retainIfImportIsEmpty>
-    <name>collect_audit_log</name>
+    <name>collect_audit_log_</name>
     <group>Default</group>
     <importonce>false</importonce>
     <importrank>1</importrank>
