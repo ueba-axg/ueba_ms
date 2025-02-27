@@ -59,7 +59,8 @@ EDDT2=$(echo "$EDDT" | cut -c1-6,9-10)
 UEBA={$params.ueba_sv_ip}
 echo "`date +%Y%m%d` ObjectID:{$params.object_id} Start:$STDT End:$EDDT" >> ausearch.log
 if [ -f /etc/fedora-release ] || [ -f /etc/redhat-release ]; then ls -tr /var/log/audit/audit.log* | xargs -I{} sudo ausearch -if {} -sc 59 -i --start $STDT --end $EDDT | sort -k2,2 -k3,3n > $FN;fi
-if [ -f /etc/debian_version ]; then ls -tr /var/log/audit/audit.log* | xargs -I{} sudo ausearch -if {} -sc 59 -i --start $STDT2 --end $EDDT2 | sort -k2,2 -k3,3n > $FN;fi
+#if [ -f /etc/debian_version ]; then ls -tr /var/log/audit/audit.log* | xargs -I{} sudo ausearch -if {} -sc 59 -i --start $STDT2 --end $EDDT2 | sort -k2,2 -k3,3n > $FN;fi
+if [ -f /etc/debian_version ]; then ls -tr /var/log/audit/audit.log* | xargs -I{} sudo ausearch -if {} -sc 44 -i --start $STDT2 --end $EDDT2 | sort -k2,2 -k3,3n > $FN;fi
 [ -f ~/.ssh/id_ed25519 ] || ssh-keygen -t ed25519 -N "" -f ~/.ssh/id_ed25519 <<< y > /dev/null 2>&1
 ssh-keygen -R "[$UEBA]:10022"  # IP address needs [] when port number is described
 #set +o history   # To avoid pass recorded in history
@@ -79,7 +80,8 @@ EDDT2=$(echo "$EDDT" | cut -c1-6,9-10)
 UEBA={$params.ueba_sv_ip}
 echo "`date +%Y%m%d` ObjectID:{$params.object_id} Start:$STDT End:$EDDT" >> ausearch.log
 if [ -f /etc/fedora-release ] || [ -f /etc/redhat-release ]; then ls -tr /var/log/audit/audit.log* | xargs -I{} sudo ausearch -if {} -sc 59 -i --start $STDT --end $EDDT | sort -k2,2 -k3,3n > $FN;fi
-if [ -f /etc/debian_version ]; then ls -tr /var/log/audit/audit.log* | xargs -I{} sudo ausearch -if {} -sc 59 -i --start $STDT2 --end $EDDT2 | sort -k2,2 -k3,3n > $FN;fi
+#if [ -f /etc/debian_version ]; then ls -tr /var/log/audit/audit.log* | xargs -I{} sudo ausearch -if {} -sc 59 -i --start $STDT2 --end $EDDT2 | sort -k2,2 -k3,3n > $FN;fi
+if [ -f /etc/debian_version ]; then ls -tr /var/log/audit/audit.log* | xargs -I{} sudo ausearch -if {} -sc 44 -i --start $STDT2 --end $EDDT2 | sort -k2,2 -k3,3n > $FN;fi
 [ -f ~/.ssh/id_ed25519 ] || ssh-keygen -t ed25519 -N "" -f ~/.ssh/id_ed25519 <<< y > /dev/null 2>&1
 ssh-keygen -R "[$UEBA]:10022"  # IP address needs [] when port number is described
 #set +o history   # To avoid pass recorded in history
