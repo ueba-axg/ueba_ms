@@ -70,7 +70,7 @@ rm -f ausearch_*.tar.gz
 tar cvfz ${FN}.tar.gz ${FN}]]></output>
   </command>
   <command name="UPDATE">
-    <operation><![CDATA[FN=ausearch_`echo $SSH_CONNECTION | awk '\{print $3\}'`_`date +%Y%m%d%H%M%S`.log
+    <operation><![CDATA[FN=ausearch_`echo $SSH_CONNECTION | cut -d ' ' -f 3`_`date +%Y%m%d%H%M%S`.log
 STDT={$params.stdt_ddmmyyyy}
 STDT2="${STDT:0:6}${STDT:8:2}"
 EDDT={$params.eddt_ddmmyyyy}
