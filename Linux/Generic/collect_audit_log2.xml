@@ -44,9 +44,9 @@
     </parser>
   </command>
   <command name="CREATE">
-    <operation><![CDATA[if [ -f /etc/fedora-release ]; then sudo dnf -y install audit && sudo systemctl enable --now auditd;fi
-if [ -f /etc/redhat-release ]; then sudo dnf -y install audit && sudo systemctl enable --now auditd;fi
-if [ -f /etc/debian_version ]; then sudo apt-get update && sudo apt-get -y install auditd && sudo systemctl enable --now auditd;fi
+    <operation><![CDATA[if [ -f /etc/fedora-release ]; then sudo dnf -y install audit sshpass && sudo systemctl enable --now auditd;fi
+if [ -f /etc/redhat-release ]; then sudo dnf -y install audit sshpass && sudo systemctl enable --now auditd;fi
+if [ -f /etc/debian_version ]; then sudo apt-get update && sudo apt-get -y install auditd sshpass && sudo systemctl enable --now auditd;fi
 echo "`date +%Y%m%d` ObjectID:{$params.object_id} Start:{$params.stdt_ddmmyyyy} End:{$params.eddt_ddmmyyyy}" >> ausearch.log
 ]]></operation>
   </command>
