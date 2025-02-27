@@ -54,6 +54,16 @@ if [ "$Distrib" = "debian" ]; then sudo apt-get update && sudo apt-get -y instal
   <command name="READ"/>
   <command name="UPDATE"/>
   <command name="CONSTRAINT"/>
-  <command name="DELETE"/>
+  <command name="DELETE">
+    <operation><![CDATA[Distrib=""
+if [ -f /etc/fedora-release ]; then Distrib="fedora"; fi
+if [ -f /etc/redhat-release ]; then Distrib="redhat"; fi
+if [ -f /etc/debian_version ]; then Distrib="debian"; fi
+echo "`date +%Y%m%d` ObjectID:{$params.object_id} Start:{$params.stdt_ddmmyyyy} End:{$params.eddt_ddmmyyyy}" >> ausearch.log
+if [ "$Distrib" = "redhat" ]; then sudo systemctl disable --now auditd && sudo dnf -y remove audit;fi
+if [ "$Distrib" = "fedora" ]; then sudo systemctl disable --now auditd && sudo dnf -y remove audit;fi
+if [ "$Distrib" = "debian" ]; then sudo systemctl disable --now auditd && sudo apt-get -y remove auditd;fi
+]]></operation>
+  </command>
   <command name="LIST"/>
 </ObjectDefinition>
