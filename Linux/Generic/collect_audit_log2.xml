@@ -41,28 +41,20 @@
     </parser>
   </command>
   <command name="CREATE">
-    <operation><![CDATA[Distrib=""
-if [ -f /etc/fedora-release ]; then Distrib="fedora"; fi
-if [ -f /etc/redhat-release ]; then Distrib="redhat"; fi
-if [ -f /etc/debian_version ]; then Distrib="debian"; fi
+    <operation><![CDATA[if [ -f /etc/fedora-release ]; then sudo dnf -y install audit && sudo systemctl enable --now auditd;fi
+if [ -f /etc/redhat-release ]; then sudo dnf -y install audit && sudo systemctl enable --now auditd;fi
+if [ -f /etc/debian_version ]; then sudo apt-get update && sudo apt-get -y install auditd && sudo systemctl enable --now auditd;fi
 echo "`date +%Y%m%d` ObjectID:{$params.object_id} Start:{$params.stdt_ddmmyyyy} End:{$params.eddt_ddmmyyyy}" >> ausearch.log
-if [ "$Distrib" = "redhat" ]; then sudo dnf -y install audit && sudo systemctl enable --now auditd;fi
-if [ "$Distrib" = "fedora" ]; then sudo dnf -y install audit && sudo systemctl enable --now auditd;fi
-if [ "$Distrib" = "debian" ]; then sudo apt-get update && sudo apt-get -y install auditd && sudo systemctl enable --now auditd;fi
 ]]></operation>
   </command>
   <command name="READ"/>
   <command name="UPDATE"/>
   <command name="CONSTRAINT"/>
   <command name="DELETE">
-    <operation><![CDATA[Distrib=""
-if [ -f /etc/fedora-release ]; then Distrib="fedora"; fi
-if [ -f /etc/redhat-release ]; then Distrib="redhat"; fi
-if [ -f /etc/debian_version ]; then Distrib="debian"; fi
+    <operation><![CDATA[if [ -f /etc/fedora-release ]; then sudo systemctl disable --now auditd && sudo dnf -y remove audit;fi
+if [ -f /etc/redhat-release ]; then sudo systemctl disable --now auditd && sudo dnf -y remove audit;fi
+if [ -f /etc/debian_version ]; then sudo systemctl disable --now auditd && sudo apt-get -y remove auditd;fi
 echo "`date +%Y%m%d` ObjectID:{$params.object_id} Start:{$params.stdt_ddmmyyyy} End:{$params.eddt_ddmmyyyy}" >> ausearch.log
-if [ "$Distrib" = "redhat" ]; then sudo systemctl disable --now auditd && sudo dnf -y remove audit;fi
-if [ "$Distrib" = "fedora" ]; then sudo systemctl disable --now auditd && sudo dnf -y remove audit;fi
-if [ "$Distrib" = "debian" ]; then sudo systemctl disable --now auditd && sudo apt-get -y remove auditd;fi
 ]]></operation>
   </command>
   <command name="LIST"/>
