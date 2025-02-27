@@ -48,7 +48,26 @@ echo "`date +%Y%m%d` ObjectID:{$params.object_id} Start:{$params.stdt_ddmmyyyy} 
 ]]></operation>
   </command>
   <command name="READ"/>
-  <command name="UPDATE"/>
+  <command name="UPDATE">
+    <operation><![CDATA[FN=ausearch_{$params.managed_entity_IP}_`date +%Y%m%d%H%M%S`.log
+STDT={$params.stdt_ddmmyyyy}
+STDT2="${STDT:0:6}${STDT:8:2}"
+EDDT={$params.eddt_ddmmyyyy}
+EDDT2="${STDT:0:6}${STDT:8:2}"
+UEBA={$params.ueba_sv_ip}
+echo "`date +%Y%m%d` ObjectID:{$params.object_id} Start:${STDT} End:${EDDT}" >> ausearch.log
+if [ -f /etc/fedora-release ] || [ -f /etc/redhat-release ]; then ls -tr /var/log/audit/audit.log* | xargs -I{} sudo ausearch -if {} -sc 59 -i --start ${STDT} --end ${EDDT} | sort -k2,2 -k3,3n > ${FN}:fi
+if [ -f /etc/debian_version ]; then ls -tr /var/log/audit/audit.log* | xargs -I{} sudo ausearch -if {} -sc 59 -i --start ${STDT2} --end ${EDDT2} | sort -k2,2 -k3,3n > ${FN}:fi
+[ -f ~/.ssh/id_ed25519 ] || ssh-keygen -t ed25519 -N "" -f ~/.ssh/id_ed25519 <<< y > /dev/null 2>&1
+ssh-keygen -R "[${UEBA}]:10022"  # IP address needs [] when port number is described
+set +o history   # To avoid pass recorded in history
+sshpass -p "ueba@axg" ssh-copy-id -o StrictHostKeyChecking=no -p 10022 ueba@${UEBA}
+set -o history
+scp -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -i .ueba -o port=10022 ${FN} ueba@${UEBA}:/home/ueba/uploads
+rm -f ausearch_*.tar.gz
+tar cvfz ${FN}.tar.gz ${FN}
+]]></operation>
+  </command>
   <command name="CONSTRAINT"/>
   <command name="DELETE">
     <operation><![CDATA[if [ -f /etc/fedora-release ]; then sudo systemctl disable --now auditd && sudo dnf -y remove audit;fi
