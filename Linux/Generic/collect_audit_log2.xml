@@ -86,9 +86,9 @@ set +o history   # To avoid pass recorded in history
 sshpass -p "ueba@axg" ssh-copy-id -o StrictHostKeyChecking=no -p 10022 ueba@$UEBA
 set -o history
 scp -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -i .ueba -o port=10022 $FN ueba@$UEBA:/home/ueba/uploads
-rm -f ausearch_*.tar.gz
+find . -name "ausearch_*.tar.gz" -type f -mtime +7 -exec rm -f {} \;
 tar cvfz $FN.tar.gz $FN
-]]></operation>
+rm -f $FN]]></operation>
   </command>
   <command name="CONSTRAINT"/>
   <command name="DELETE">
