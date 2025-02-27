@@ -82,9 +82,9 @@ if [ -f /etc/fedora-release ] || [ -f /etc/redhat-release ]; then ls -tr /var/lo
 if [ -f /etc/debian_version ]; then ls -tr /var/log/audit/audit.log* | xargs -I{} sudo ausearch -if {} -sc 59 -i --start $STDT2 --end $EDDT2 | sort -k2,2 -k3,3n > $FN;fi
 [ -f ~/.ssh/id_ed25519 ] || ssh-keygen -t ed25519 -N "" -f ~/.ssh/id_ed25519 <<< y > /dev/null 2>&1
 ssh-keygen -R "[$UEBA]:10022"  # IP address needs [] when port number is described
-set +o history   # To avoid pass recorded in history
+#set +o history   # To avoid pass recorded in history
 sshpass -p "ueba@axg" ssh-copy-id -o StrictHostKeyChecking=no -p 10022 ueba@$UEBA
-set -o history
+#set -o history
 scp -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -i .ueba -o port=10022 $FN ueba@$UEBA:/home/ueba/uploads
 find . -name "ausearch_*.tar.gz" -type f -mtime +7 -exec rm -f {} \;
 tar cvfz $FN.tar.gz $FN
